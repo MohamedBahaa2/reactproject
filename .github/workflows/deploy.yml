@@ -27,8 +27,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: "DepiReactProjectFinal"
-          environment_name: "DepiReactProjectFinal-env"
+          application_name: "bahaa"
+          environment_name: "Bahaa-env"
           version_label: ${{ github.sha }}
           region: eu-north-1
           deployment_package: deploy.zip
