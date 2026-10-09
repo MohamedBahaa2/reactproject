@@ -1,1 +1,34 @@
-//
+name: CI
+
+on:
+  push: 
+    branches:
+    - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t mohamedbahaa2/travis-ci-image -f dockerfile.dev .
+
+      - name: Run tests
+        run: docker run -e CI=true mohamedbahaa2/travis-ci-image npm run test
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "DepiReactProject"
+          environment_name: "DepiReactProject-env"
+          version_label: ${{ github.sha }}
+          region: eu-north-1
+          deployment_package: deploy.zip
