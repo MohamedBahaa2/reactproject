@@ -1,0 +1,12 @@
+pipeline{
+    agent{
+        label 'docker'
+    }
+    stages{
+        stage('Build Docker Image'){
+            script{
+                sh 'docker build -t my-image:latest dockerfile.dev .'
+            }
+        }
+    }
+}
